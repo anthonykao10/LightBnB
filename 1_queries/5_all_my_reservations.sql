@@ -31,28 +31,6 @@ ORDER BY res.start_date
 LIMIT 10
 
 
-/* Join on property_id */
--- SELECT properties.id, properties.title, properties.cost_per_night, reservations.start_date, AVG(rating)
--- FROM properties
--- JOIN reservations ON properties.id = property_id
--- JOIN property_reviews ON properties.id = property_reviews.property_id
--- -- WHERE reservations.end_date < now()
--- -- AND reservations.guest_id = 1
--- GROUP BY properties.id, reservations.id
--- ORDER BY reservations.start_date
--- LIMIT 10
-
-/* Don't join on reservation_id */
--- SELECT properties.id, properties.title, properties.cost_per_night, reservations.start_date, AVG(rating)
--- FROM properties
--- JOIN reservations ON properties.id = property_id
--- JOIN property_reviews ON reservations.id = reservation_id
--- -- WHERE reservations.end_date < now()
--- -- AND reservations.guest_id = 1
--- GROUP BY properties.id, reservations.id
--- ORDER BY reservations.start_date
--- LIMIT 10
-
 /* Example solution */
 -- SELECT properties.*, reservations.*, avg(rating) as average_rating
 -- SELECT properties.id, properties.title, properties.cost_per_night, reservations.start_date, avg(rating) as average_rating
