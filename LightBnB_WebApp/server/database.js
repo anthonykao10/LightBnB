@@ -26,11 +26,11 @@ const getUserWithEmail = function(email) {
 
   return pool.query(queryString, queryParams)
     .then(res => {
-      // user does not exist
+      // user not found
       if (!res.rows[0]) return null;
       return res.rows[0];
     })
-    .catch(() => null);
+    .catch(console.error('error inserting', err));
 }
 exports.getUserWithEmail = getUserWithEmail;
 
@@ -47,11 +47,11 @@ const getUserWithId = function(id) {
   const queryParams = [id];
   return pool.query(queryString, queryParams)
     .then(res => {
-      // user does not exist
+      // user not found
       if (!res.rows[0]) return null;
       return res.rows[0]
     })
-    .catch(() => null);
+    .catch(console.error('error inserting', err));
 }
 exports.getUserWithId = getUserWithId;
 
@@ -74,10 +74,7 @@ const addUser =  function(user) {
       console.log(user);
       return user;
     })
-    .catch(err => {
-      console.error('error inserting', err);
-      return err;
-    });
+    .catch(err => console.error('error inserting', err));
 }
 exports.addUser = addUser;
 
