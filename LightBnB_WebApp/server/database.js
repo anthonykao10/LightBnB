@@ -99,12 +99,7 @@ const getAllReservations = function(guest_id, limit = 10) {
   `;
   const queryParams = [guest_id, limit];
   return pool.query(queryString, queryParams)
-    .then(res => {
-      // console.log('\nFROM getAllReservations ================================\n');
-      // console.log(res);
-      // console.log('\n=====================================================\n');
-      return res.rows;
-    })
+    .then(res => res.rows)
     .catch(err => console.log(err)); 
 }
 exports.getAllReservations = getAllReservations;
