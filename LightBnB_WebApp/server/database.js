@@ -26,10 +26,10 @@ const getUserWithEmail = function(email) {
 
   return pool.query(queryString, queryParams)
     .then(res => {
-      console.log(res.rows[0]);
-      return res.rows[0]
+      // user does not exist
+      if (!res.rows[0]) return null;
+      return res.rows[0];
     })
-    // user does not exist
     .catch(() => null);
 }
 exports.getUserWithEmail = getUserWithEmail;
@@ -46,8 +46,11 @@ const getUserWithId = function(id) {
   `;
   const queryParams = [id];
   return pool.query(queryString, queryParams)
-    .then(res => res.rows[0])
-    // user does not exist
+    .then(res => {
+      // user does not exist
+      if (!res.rows[0]) return null;
+      return res.rows[0]
+    })
     .catch(() => null);
 }
 exports.getUserWithId = getUserWithId;
