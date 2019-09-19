@@ -29,6 +29,7 @@ const getUserWithEmail = function(email) {
       console.log(res.rows[0]);
       return res.rows[0]
     })
+    // user does not exist
     .catch(() => null);
 }
 exports.getUserWithEmail = getUserWithEmail;
@@ -39,7 +40,15 @@ exports.getUserWithEmail = getUserWithEmail;
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithId = function(id) {
-  return Promise.resolve(users[id]);
+  const queryString = `
+  SELECT * FROM users
+  WHERE id = $1
+  `;
+  const queryParams = [id];
+  return pool.query(queryString, queryParams)
+    .then(res => res.rows[0])
+    // user does not exist
+    .catch(() => null);
 }
 exports.getUserWithId = getUserWithId;
 
