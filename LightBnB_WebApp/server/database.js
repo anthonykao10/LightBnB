@@ -30,7 +30,7 @@ const getUserWithEmail = function(email) {
       if (!res.rows[0]) return null;
       return res.rows[0];
     })
-    .catch(console.error('error inserting', err));
+    .catch(err => console.error('error fetching user', err));
 }
 exports.getUserWithEmail = getUserWithEmail;
 
@@ -51,7 +51,7 @@ const getUserWithId = function(id) {
       if (!res.rows[0]) return null;
       return res.rows[0]
     })
-    .catch(console.error('error inserting', err));
+    .catch(err => console.error('error fetching user', err));
 }
 exports.getUserWithId = getUserWithId;
 
