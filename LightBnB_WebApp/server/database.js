@@ -153,15 +153,8 @@ const getAllProperties = function(options, limit = 10) {
   LIMIT $${queryParams.length};
   `;
 
-  // console.log(queryString, queryParams);
   return pool.query(queryString, queryParams)
-  .then(res => {
-    // console.log('\n====================================\n');
-    // console.log(res.rows);
-    // console.log('\n====================================\n');
-    return res.rows
-  });
-  
+  .then(res => res.rows);
 };
 exports.getAllProperties = getAllProperties;
 
