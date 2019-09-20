@@ -70,7 +70,7 @@ const addUser =  function(user) {
   const queryParams = [user.name, user.email, user.password];
 
   return pool.query(queryString, queryParams)
-    .then(user => user)
+    .then(res => res.rows[0])
     .catch(err => console.error('\nerror inserting:\n', err));
 }
 exports.addUser = addUser;
