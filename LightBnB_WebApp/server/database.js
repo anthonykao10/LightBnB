@@ -30,7 +30,7 @@ const getUserWithEmail = function(email) {
       if (!res.rows[0]) return null;
       return res.rows[0];
     })
-    .catch(err => console.error('error fetching user', err));
+    .catch(err => console.error('\nerror fetching user:\n', err));
 }
 exports.getUserWithEmail = getUserWithEmail;
 
@@ -51,7 +51,7 @@ const getUserWithId = function(id) {
       if (!res.rows[0]) return null;
       return res.rows[0]
     })
-    .catch(err => console.error('error fetching user', err));
+    .catch(err => console.error('\nerror fetching user:\n', err));
 }
 exports.getUserWithId = getUserWithId;
 
@@ -70,11 +70,8 @@ const addUser =  function(user) {
   const queryParams = [user.name, user.email, user.password];
 
   return pool.query(queryString, queryParams)
-    .then(user => {
-      console.log(user);
-      return user;
-    })
-    .catch(err => console.error('error inserting', err));
+    .then(user => user)
+    .catch(err => console.error('\nerror inserting:\n', err));
 }
 exports.addUser = addUser;
 
@@ -100,7 +97,7 @@ const getAllReservations = function(guest_id, limit = 10) {
   const queryParams = [guest_id, limit];
   return pool.query(queryString, queryParams)
     .then(res => res.rows)
-    .catch(err => console.log(err)); 
+    .catch(err => console.log('\nerror getting reservations:\n', err)); 
 }
 exports.getAllReservations = getAllReservations;
 
