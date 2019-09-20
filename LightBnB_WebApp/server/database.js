@@ -158,21 +158,23 @@ const getAllProperties = function(options, limit = 10) {
 
   if (options.minimum_rating) {
     queryParams.push(options.minimum_rating);
-    let operator = '';
-    if (options.city || options.owner_id || options.minimum_price_per_night || options.maximum_price_per_night) {
-      operator = 'AND';
-    } else {
-      operator = 'WHERE';
-    }
-    queryString += `${operator} rating > $${queryParams.length} `;
+    queryString += `
+    GROUP BY properties.id
+    HAVING avg(property_reviews.rating) >= $${queryParams.length}
+    `;
+    queryParams.push(limit);
+    queryString += `
+    ORDER BY cost_per_night
+    LIMIT $${queryParams.length};
+    `;
+  } else {
+    queryParams.push(limit);
+    queryString += `
+    GROUP BY properties.id
+    ORDER BY cost_per_night
+    LIMIT $${queryParams.length};
+    `;
   }
-
-  queryParams.push(limit);
-  queryString += `
-  GROUP BY properties.id
-  ORDER BY cost_per_night
-  LIMIT $${queryParams.length};
-  `;
 
   // console.log('\n=================\n');
   // console.log(queryString);
