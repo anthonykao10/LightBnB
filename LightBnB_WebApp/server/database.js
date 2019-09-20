@@ -125,22 +125,46 @@ const getAllProperties = function(options, limit = 10) {
 
   if (options.owner_id) {
     queryParams.push(options.owner_id);
-    queryString += `AND owner_id = $${queryParams.length} `;
+    let operator = '';
+    if (options.city) {
+      operator = 'AND';
+    } else {
+      operator = 'WHERE';
+    }
+    queryString += `${operator} owner_id = $${queryParams.length} `;
   }
 
   if (options.minimum_price_per_night) {
     queryParams.push(options.minimum_price_per_night);
-    queryString += `AND cost_per_night > $${queryParams.length} `;
+    let operator = '';
+    if (options.city || options.owner_id) {
+      operator = 'AND';
+    } else {
+      operator = 'WHERE';
+    }
+    queryString += `${operator} cost_per_night > $${queryParams.length} `;
   }
 
   if (options.maximum_price_per_night) {
     queryParams.push(options.maximum_price_per_night);
-    queryString += `AND cost_per_night < $${queryParams.length} `;
+    let operator = '';
+    if (options.city || options.owner_id || options.minimum_price_per_night) {
+      operator = 'AND';
+    } else {
+      operator = 'WHERE';
+    }
+    queryString += `${operator} cost_per_night < $${queryParams.length} `;
   }
 
   if (options.minimum_rating) {
     queryParams.push(options.minimum_rating);
-    queryString += `AND rating > $${queryParams.length} `;
+    let operator = '';
+    if (options.city || options.owner_id || options.minimum_price_per_night || options.maximum_price_per_night) {
+      operator = 'AND';
+    } else {
+      operator = 'WHERE';
+    }
+    queryString += `${operator} rating > $${queryParams.length} `;
   }
 
   queryParams.push(limit);
@@ -149,6 +173,11 @@ const getAllProperties = function(options, limit = 10) {
   ORDER BY cost_per_night
   LIMIT $${queryParams.length};
   `;
+
+  // console.log('\n=================\n');
+  // console.log(queryString);
+  // console.log(queryParams);
+  // console.log('\n=================\n');
 
   return pool.query(queryString, queryParams)
   .then(res => res.rows);
