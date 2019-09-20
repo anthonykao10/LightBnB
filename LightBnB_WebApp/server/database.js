@@ -115,7 +115,7 @@ const getAllProperties = function(options, limit = 10) {
   let queryString = `
   SELECT properties.*, avg(property_reviews.rating) as average_rating
   FROM properties
-  JOIN property_reviews ON properties.id = property_id
+  FULL OUTER JOIN property_reviews ON properties.id = property_id
   `;
 
   if (options.city) {
@@ -177,10 +177,9 @@ const addProperty = function(property) {
       city, 
       country, 
       street, 
-      post_code,
-      active
+      post_code
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, true)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
     RETURNING *;
   `;
   const queryParams = [
@@ -201,7 +200,10 @@ const addProperty = function(property) {
   ];
 
   return pool.query(queryString, queryParams)
-    .then(res => res.rows[0])
+    .then(res => {
+      console.log(res.rows[0]);
+      return res.rows[0];
+    })
     .catch(err => console.log('\nerror creating property:\n', err));
 }
 exports.addProperty = addProperty;
